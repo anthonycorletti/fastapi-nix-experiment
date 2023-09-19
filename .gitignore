@@ -144,6 +144,7 @@ node_modules/
 
 # Lock files
 *.lock
+!flake.lock
 
 # Temporary files
 tmp/
