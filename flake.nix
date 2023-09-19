@@ -2,47 +2,52 @@
   description = "fastapi-nix-experiment";
 
   inputs = {
-    nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    # This section will allow us to create a python environment
-    # with specific predefined python packages from PyPi
-    pypi-deps-db = {
-      url = "github:DavHau/pypi-deps-db";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.mach-nix.follows = "mach-nix";
-    };
-    mach-nix = {
-      url = "github:DavHau/mach-nix/3.5.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.pypi-deps-db.follows = "pypi-deps-db";
-    };
+    mach-nix.url = "github:davhau/mach-nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, mach-nix, ... }@attr:
-  flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, mach-nix, flake-utils, ... }:
     let
-      pkgs = import nixpkgs { inherit system; };
+      pythonVersion = "python311";
+    in
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        mach = mach-nix.lib.${system};
 
-      # create a custom python environment
-      myPython = mach-nix.lib.${system}.mkPython {
-        # specify the base version of python you with to use
-        python = "python311";
+        pythonApp = mach.buildPythonApplication ./.;
+        pythonAppEnv = mach.mkPython {
+          python = pythonVersion;
+          requirements = builtins.readFile ./requirements.txt;
+        };
+        pythonAppImage = pkgs.dockerTools.buildLayeredImage {
+          name = pythonApp.pname;
+          contents = [ pythonApp ];
+          config.Cmd = [ "${pythonApp}/bin/main" ];
+        };
+      in
+      rec
+      {
+        packages = {
+          image = pythonAppImage;
 
-        requirements = ''
-          fastapi
-          uvicorn
-        '';
-      };
-    in {
-      devShell = pkgs.mkShell {
-        nativeBuildInputs = [
-          # Now you can use your custom python environemt!
-          # This should also work for `buildInputs` and so on!
-          myPython
-        ];
-      };
-    }
-  );
+          pythonPkg = pythonApp;
+          default = packages.pythonPkg;
+        };
+
+        apps.default = {
+          type = "app";
+          program = "${packages.pythonPkg}/bin/main";
+        };
+
+        devShells.default = pkgs.mkShellNoCC {
+          packages = [ pythonAppEnv ];
+
+          shellHook = ''
+            export PYTHONPATH="${pythonAppEnv}/bin/python"
+          '';
+        };
+      }
+    );
 }
