@@ -47,17 +47,13 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1695153015,
-        "narHash": "sha256-f/i8RvK+cY2d1dRGThei5COKhkFTr7Ot/h8sP6GtMU0=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3ff262989756def104cadee8f5525bfed0296fcc",
-        "type": "github"
+        "narHash": "sha256-iHZSGrb9gVpZRR4B2ishUN/1LRKWtSHZNO37C8z1SmA=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz"
       },
       "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz"
       }
     },
     "nixpkgsPy36": {
