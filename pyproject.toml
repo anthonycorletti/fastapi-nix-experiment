@@ -1,22 +1,14 @@
 [build-system]
-requires = [
-    "setuptools",
-    "wheel",
-]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "app"
 description = "A new Python project."
 readme = "README.md"
-dynamic = [
-    "version",
-]
-requires-python = ">=3.11"
-dependencies = [
-    "fastapi>=0.103.1",
-    "uvicorn>=0.23.2",
-]
+dynamic = ["version"]
+requires-python = ">=3.10"
+dependencies = ["fastapi>=0.103.1", "uvicorn>=0.23.2"]
 
 [project.optional-dependencies]
 dev = [
@@ -38,10 +30,7 @@ dev = [
 
 [tool.snok]
 name = "app"
-sources = [
-    "app",
-    "tests",
-]
+sources = ["app", "tests"]
 
 [tool.ruff]
 line-length = 88
@@ -60,20 +49,12 @@ ignore = [
     "D413",
     "D415",
 ]
-include = [
-    "*.py",
-]
-select = [
-    "E",
-    "F",
-    "I",
-]
+include = ["*.py"]
+select = ["E", "F", "I"]
 target-version = "py310"
 
 [tool.black]
-target-version = [
-    "py310",
-]
+target-version = ["py310"]
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -93,11 +74,7 @@ exclude = '''
 python_version = "3.11"
 ignore_missing_imports = true
 disallow_untyped_defs = true
-exclude = [
-    "dist",
-    "build",
-    ".venv",
-]
+exclude = ["dist", "build", ".venv"]
 [[tool.mypy.overrides]]
 module = "app._modal"
 ignore_errors = true
@@ -106,9 +83,7 @@ ignore_errors = true
 convention = "google"
 
 [tool.setuptools.package-data]
-app = [
-    "py.typed",
-]
+app = ["py.typed"]
 
 [tool.pytest.ini_options]
 addopts = [
@@ -127,25 +102,12 @@ addopts = [
 
 [tool.coverage.run]
 parallel = true
-source = [
-    "app",
-    "tests",
-]
-omit = [
-    "*__init__.py",
-    "_modal.py",
-]
-concurrency = [
-    "thread",
-    "greenlet",
-    "multiprocessing",
-]
+source = ["app", "tests"]
+omit = ["*__init__.py", "_modal.py"]
+concurrency = ["thread", "greenlet", "multiprocessing"]
 
 [tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "raise NotImplementedError",
-]
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
 
 [tool.coverage.html]
 directory = "htmlcov"
@@ -157,6 +119,4 @@ output = "coverage.xml"
 attr = "app.__version__"
 
 [tool.setuptools.packages.find]
-exclude = [
-    "tests",
-]
+exclude = ["tests"]

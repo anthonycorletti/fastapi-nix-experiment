@@ -157,3 +157,6 @@ tmp/
 
 # Python version
 .python-version
+
+# Nix
+result/
