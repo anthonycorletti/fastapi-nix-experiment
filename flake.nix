@@ -17,7 +17,6 @@
         mach = mach-nix.lib.${system};
 
         pythonApp = mach.buildPythonApplication ./.;
-        pythonApp.pname = "app";
         pythonAppEnv = mach.mkPython {
           python = pythonVersion;
           requirements = builtins.readFile ./requirements.txt;
@@ -32,7 +31,6 @@
       {
         packages = {
           image = pythonAppImage;
-
           pythonPkg = pythonApp;
           default = packages.pythonPkg;
         };
