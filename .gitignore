@@ -159,4 +159,4 @@ tmp/
 .python-version
 
 # Nix
-result/
+result
