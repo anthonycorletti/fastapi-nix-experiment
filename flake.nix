@@ -2,7 +2,7 @@
   description = "fastapi-nix-experiment";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs:nixos-23.05";
+    nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz";
     flake-utils.url = "github:numtide/flake-utils";
 
     # This section will allow us to create a python environment
